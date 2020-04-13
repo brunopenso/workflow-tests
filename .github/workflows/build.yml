@@ -1,4 +1,4 @@
-name: workflow-prerelease
+name: workflow-build
 
 on:
   push:
