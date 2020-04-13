@@ -1,0 +1,5 @@
+name: workflow-prerelease
+
+on:
+  release:
+    types: [prereleased]

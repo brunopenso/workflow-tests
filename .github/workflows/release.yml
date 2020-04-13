@@ -1,0 +1,5 @@
+name: workflow-release
+
+on:
+  release:
+    types: [publish]
