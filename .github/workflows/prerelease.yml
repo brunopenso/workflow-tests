@@ -3,3 +3,12 @@ name: workflow-prerelease
 on:
   release:
     types: [prereleased]
+
+jobs:
+  build:
+    runs-in: ubuntu
+    steps:
+    - uses: action/checkout@v1
+    
+    - name: 'Execute command'
+      run: ls

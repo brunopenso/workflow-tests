@@ -1,8 +1,8 @@
-name: workflow-release
+name: workflow-prerelease
 
 on:
-  release:
-    types: [publish]
+  push:
+    - master
 
 jobs:
   build:
