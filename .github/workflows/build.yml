@@ -2,7 +2,8 @@ name: workflow-build
 
 on:
   push:
-    - master
+    branches:
+      - master
 
 jobs:
   build:
