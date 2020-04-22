@@ -1,45 +1,30 @@
-Repo for testing workflows using prerelease and release options
+# Workflow Tests
+
+Repo for testing workflows when using releases
 
 From github documentation > https://help.github.com/pt/actions/reference/workflow-syntax-for-github-actions
 
 `on.<event_name>.types`
 
-Selects the types of activity that will trigger a workflow run. Most GitHub events are triggered by more than one type of activity. For example, the event for the release resource is triggered when a release is published, unpublished, created, edited, deleted, or prereleased. The types keyword enables you to narrow down activity that causes the workflow to run. When only one activity type triggers a webhook event, the types keyword is unnecessary.
+Selects the types of activity that will trigger a workflow run. Most GitHub events are triggered by more than one type of activity. For example, the event for the release resource is triggered when a release is **published**, **unpublished**, **created**, **edited**, **deleted**, **released** or **prereleased**. The types keyword enables you to narrow down activity that causes the workflow to run. When only one activity type triggers a webhook event, the types keyword is unnecessary.
 
-## Github Support Orientation
+## How to use to emulate CD to different environments
 
-Every time you modify something in the web interface, more than one event are triggered. You can configure your repository to send webhooks for every release event and see which events are triggered in every particular case. For the explanation below when I refer to an event as release:prereleased it means the release event with activity type prereleased
+### Using Trunk Based Development (TBD)
 
-Looking at your use cases it seems that you need to focus on the release:prereleased event and the release:released event.
+- Each check-in on the master branch will deploy to development environment
+- Create a release checking the checkbox **This is a pre-release** will deploy to qa/homologation environment
+- Edit that release uncheck **This is a pre-release** and publish will deploy to production environment
 
-Let me go into more detail:
+### Using Git Flow
 
-When you go to the web interface, create a new release, don’t check the this is a prerelease button and then click on Publish release, the following webhook events are triggered:
+Here it could exists some variations, but you don`t need to use the Release because the trigger of the workflow will be the merge/pull request to the branch
 
-release:released
-release:published
-release:created
-create
-push
-If then for that same release you go to Edit release, check This is a prerelease and click Update release, the following webhook events are triggered:
+- Branch Develop will be deploy to development environment
+- Merge to Release, or create a  will deploy to qa/homologation environment
+- Merge to Master will deploy to production
 
-release:prereleased
-When you go to the web interface, create a new release, check the this is a prerelease button and then click on Publish release, the following webhook events are triggered:
-```
-release:prereleased
-release:published
-release:created
-create
-push
-```
-If then for that same release you go to Edit release, uncheck This is a prerelease and click Update release, the following webhook events are triggered:
-```
-release:released
-````
-Having this in mind and looking at the use cases you mentioned, could you please modify release.yml to listen for the release event with type released, like this:
+## Downsides
 
-```
-on:
-  release:
-    types: [released]
-```
+- If you need approval between environments using TBD the best approach is to use release branch with a Pull Request approval
+- If you are using releases to deploy you need to be sure which commit should be on that package before creating a release
